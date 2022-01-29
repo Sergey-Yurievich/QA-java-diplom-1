@@ -1,27 +1,44 @@
 package praktikum;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import static org.junit.Assert.*;
 
+@RunWith(Parameterized.class)
 public class BunTest {
 
-    Bun bun = new Bun("Тест", 3223);
+    String expectedName;
+    float expectedPrice;
+    Bun bun;
 
-    @Test
-    public void getName() {
+    // Метод для параметризации
+    public BunTest (Bun bun,String expectedName, float expectedPrice) {
+        this.bun = bun;
+        this.expectedName = expectedName;
+        this.expectedPrice = expectedPrice;
 
-        String actualResult = bun.getName();
-        String expectedResult = "Тест";
+    }
 
-        assertEquals("The name is not correct",expectedResult,actualResult);
+    // Параметризация условий авторизации
+    @Parameterized.Parameters
+    public static Object[][] getTestData () {
+        return new Object[][] {
+                {new Bun("Тест", 123), "Тест", 123},
+                {new Bun("test", 1.323f), "test", 1.323f},
+                {new Bun("", -1.32f), "", -1.32f},
+                {new Bun("test", 0), "test", 0},
+
+        };
     }
 
     @Test
-    public void getPrice() {
+    public void getValue() {
 
-        float actualResult = bun.getPrice();
-        float expectedResult = 3223;
+        String actualName = bun.getName();
+        float actualPrice = bun.getPrice();
 
-        assertEquals("The price is not correct",expectedResult,actualResult,0);
+        assertEquals("The name is not correct",expectedName,actualName);
+        assertEquals("The price is not correct",expectedPrice,actualPrice,0);
     }
 }
